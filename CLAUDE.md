@@ -252,4 +252,3 @@ All product documents follow this structure:
 - **5 PM Artifacts:** Decision Memo, Intent Brief, Context File, Question Log, Scorecard. All templates in `Docs/PRDdocs/`.
 - **Legacy PRD template** preserved at `prd_template.md` for reference. New features use Intent Brief template.
 - **No code execution:** This is a documentation repository.
-- **Philosophy:** See `Docs/agentic_pm.md` for the intellectual foundation of this framework.

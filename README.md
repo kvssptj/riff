@@ -16,6 +16,23 @@ The core insight: PM work follows the same pattern as agentic coding. A team lea
 
 ---
 
+## What Led to This
+
+PM artifacts today serve two purposes, and do both poorly:
+
+1. **Thinking tool** — forces the PM to clarify their own thinking
+2. **Communication tool** — aligns others on what to build and why
+
+In an agentic world, a third purpose emerges:
+
+3. **Agent context** — gives agents enough structured information to do useful downstream work: generating specs, writing stories, tracking dependencies
+
+Current PRDs are optimized for purpose 2 and accidentally serve purpose 1. They're bad at purpose 3 — too much prose, too little structure, too many implicit assumptions. An agent reading a traditional PRD can't reliably extract what's in scope, what tradeoffs were made, or what decisions are still open.
+
+That's what prompted the 5-artifact redesign. Each artifact is structured so the judgment parts are clearly separated from the information-compilation parts. Agents handle the latter. PMs own the former.
+
+---
+
 ## The Three Levels of Agentic PM
 
 Most "AI for PM" work today is Level 1. Riff targets Level 2, with infrastructure for Level 3.
@@ -57,6 +74,12 @@ All PM work produces one of 5 artifact types:
 | **Context File** | Living domain background that agents read to stay grounded. | Anti-patterns, terminology, ownership | Document indexing, staleness detection |
 | **Question Log** | Tracks open questions from raised to resolved. | Resolutions and judgment calls | Extraction from transcripts, status tracking |
 | **Scorecard** | Living feature health tracker updated on cadence. | Health assessment | Counting, risk flagging, metric tracking |
+
+Two artifacts deserve emphasis:
+
+**Decision Memo** is the one artifact agents genuinely cannot produce. Everything else is downstream of human judgment — this is where that judgment lives. Agents can flag when assumptions change, but they can't make the call. It's small, frequent, and unambiguous. That's the point.
+
+**Intent Brief** is the flip. Today's PRD is 80% context compilation — requirements, user flows, edge cases — and 20% judgment. The Intent Brief inverts that ratio. The PM writes the 20% that matters (sections 1-5: problem, goals, constraints, scope). The agent generates the 80% (sections 6-9: spec, stories, dependencies). The PM reviews and corrects; they don't draft from scratch.
 
 How the hierarchy works:
 - **Decision Memo** is the atomic unit - small, frequent, captures actual PM judgment
@@ -152,7 +175,6 @@ riff/
 │       ├── stakeholder-summarizer/SKILL.md  # Exec summaries and status updates
 │       └── user-story-writer/SKILL.md  # Sprint-ready user stories
 └── Docs/
-    ├── agentic_pm.md                   # Philosophy and intellectual foundation
     ├── Sprint_Planning_Template.md     # Sprint planning document
     └── PRDdocs/
         ├── intent_brief_template.md    # 9-section Intent Brief template
@@ -224,13 +246,13 @@ PM work follows the same pattern:
 
 The honest gap: code has a compiler. Product decisions don't.
 
-In coding, you can verify correctness - tests pass, types check, the app runs. In PM work, quality is judgment-based. A PRD can be internally consistent but strategically wrong. A prioritization can follow a perfect framework and still miss the point.
+In coding, you can verify correctness — tests pass, types check, the app runs. In PM work, quality is judgment-based. A PRD can be internally consistent but strategically wrong. A prioritization can follow a perfect RICE framework and still miss the point. There's no green checkmark for a good strategy call.
 
-So the future state isn't "agents do PM." It's closer to: agents handle the information-heavy, consistency-checking, artifact-producing work - and the PM focuses entirely on judgment, strategy, stakeholder alignment, and the messy human stuff that no framework captures.
+This is why "agents do PM" is the wrong framing. Agents can't tell you whether to build feature A or feature B. They can tell you what's inconsistent, what's missing, and what questions are still open. That's a lot — but it's not judgment.
+
+So the future state is: agents handle the information-heavy, consistency-checking, artifact-producing work — and the PM focuses entirely on judgment, strategy, stakeholder alignment, and the messy human stuff no framework captures.
 
 The PM becomes less of a document producer and more of a decision-maker with perfect context. Which, honestly, is what the role was always supposed to be.
-
-Read the full argument in `Docs/agentic_pm.md`.
 
 ---
 
