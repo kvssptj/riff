@@ -8,6 +8,7 @@ This agent serves as the PM team lead. It handles strategy work directly and spa
 - @domain_pm — Domain specialist (deep domain knowledge for your product area)
 - @design_image_analyzer — Extract questions from design mockups/wireframes
 - @intent_writer — Write Intent Briefs (PM Intent + Agent Spec)
+- @auditor — Audit artifacts for drift, broken references, and coverage gaps
 
 **Skills (invoke directly as /skill-name):**
 - /extract-transcript — Extract open questions from meeting transcripts
@@ -116,12 +117,14 @@ When spawning teammates:
 | Design mockup analysis | `@design_image_analyzer` | User provides an image and wants design questions |
 | Intent Brief writing | `@intent_writer` | User needs a planning document (PM Intent, Agent Spec, or full) |
 | Domain-specific work (any type) | `@domain_pm` | Task is domain-specific and needs deep product knowledge |
+| Artifact audit (feature or system) | `@auditor` | User wants to find drift, broken references, or coverage gaps |
 | Meeting transcript → Question Log | `/question-log [from-transcript]` skill | User provides a transcript and wants tracked questions |
 | Meeting transcript → quick extraction | `/extract-transcript` skill | User wants a quick one-time question summary |
 | User story writing | `/user-story-writer` skill | User needs stories with acceptance criteria |
 | Backlog grooming / prioritization | `/backlog-groomer` skill | User has items to prioritize or a backlog to clean up |
 | Decision documentation | `/decision-memo` skill | A decision needs to be captured, evaluated, or documented retroactively |
 | Feature health tracking | `/scorecard` skill | User needs to create or update a feature health tracker |
+| Eval plan writing | `/eval-planner` skill | User needs an eval plan, rubric, or ship/no-ship assessment |
 | Stakeholder communication | `/stakeholder-summarizer` skill | User needs exec summaries, status updates, or briefs |
 
 #### Team Patterns
@@ -153,9 +156,9 @@ For cross-cutting PM work that doesn't fit a single deliverable:
 - **Stakeholder alignment** — Cross-functional negotiation, priority conflicts
 - **General PM coaching** — Frameworks, best practices, career guidance
 
-## 5 PM Artifact Types
+## 6 PM Artifact Types
 
-All PM work produces one of 5 artifact types. When deciding how to approach a task, map it to the right artifact first.
+All PM work produces one of 6 artifact types. When deciding how to approach a task, map it to the right artifact first.
 
 | Artifact | What It Is | Created By | Template |
 |----------|-----------|------------|----------|
@@ -164,12 +167,15 @@ All PM work produces one of 5 artifact types. When deciding how to approach a ta
 | **Context File** | Living domain background for agents. Not templated. | Manual / `@domain_pm` | N/A |
 | **Question Log** | Tracks open questions through resolution. Replaces meeting notes. | `/question-log` | `question_log_template.md` |
 | **Scorecard** | Living feature health tracker. Replaces periodic status updates. | `/scorecard` | `scorecard_template.md` |
+| **Eval Plan** | Dimensions, rubrics, and ship criteria for AI/agent features. | `/eval-planner` | `eval_plan_template.md` |
 
 **Artifact relationships:**
 - Question Log questions → resolve into Decision Memos
 - Decision Memos → referenced in Intent Brief section 5
 - Intent Brief scope → tracked in Scorecard section 3
 - Scorecard open questions → pulled from Question Log
+- Eval Plan → derived from Intent Brief sections 3 and 6; results feed Scorecard section 6b
+- Eval Plan ship/no-ship decision → documented in Decision Memo
 
 **Routing rule:** When a user asks for work, identify which artifact(s) the output should become. Then use the right agent or skill.
 

@@ -71,6 +71,7 @@ All PM work produces one of 6 artifact types. Map your task to the right artifac
 |-------|------|----------|
 | **`@design_image_analyzer`** | `.claude/agents/design_image_analyzer.md` | Analyzing Figma mockups, wireframes, or screenshots for design gaps. Output is `/question-log` compatible. |
 | **`@intent_writer`** | `.claude/agents/intent_writer.md` | Writing Intent Briefs. Modes: `[intent]` (sections 1-5), `[spec]` (sections 6-9), `[full]`, `[review]`, `[exec]` |
+| **`@auditor`** | `.claude/agents/auditor.md` | On-demand audit of PM artifacts — broken references, drift, staleness, coverage gaps. Modes: `[feature]`, `[system]` |
 
 ## Skills
 
@@ -105,6 +106,8 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 | "Should we build or buy X?" | — | `@builder` (handles directly) |
 | "Define success metrics for X" | — | `@builder` (handles directly) |
 | "Multi-step: transcript → questions → decisions" | Multiple | `@builder` (chains artifacts in sequence) |
+| "Audit artifacts for feature X" | — | `@auditor [feature] X` |
+| "System-wide artifact health check" | — | `@auditor [system]` |
 | "Write an eval plan for feature X" | Eval Plan | `/eval-planner [create]` |
 | "Define eval dimensions and rubric" | Eval Plan | `/eval-planner [rubric]` |
 | "Update eval results, ship or no-ship?" | Eval Plan + Decision Memo | `/eval-planner [update]` → `/decision-memo [capture]` |
@@ -117,6 +120,7 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 @domain_pm [your task/question]
 @intent_writer [your task/question]
 @design_image_analyzer [your task/question]
+@auditor [feature name] or @auditor [system]
 ```
 
 **Skill invocation** — use slash commands inline:
