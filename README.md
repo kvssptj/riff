@@ -107,12 +107,15 @@ Eval Plan decision -> documented in -> Decision Memo
 @builder (team lead)
 ├── @intent_writer         - writes Intent Briefs (PM Intent + Agent Spec)
 ├── @domain_pm             - domain specialist (you customize this)
-└── @design_image_analyzer - extracts questions from Figma mockups
+├── @design_image_analyzer - extracts questions from Figma mockups
+└── @auditor               - on-demand artifact health checks (invoke directly)
 ```
 
 `@builder` handles strategy directly - competitive analysis, build-vs-buy, roadmap, metrics - and spawns teammates for focused deliverables.
 
 `@domain_pm` is a template agent. You fill it in with your product's domain knowledge - feature areas, constructs, key docs - and it becomes a grounded specialist for your product.
+
+`@auditor` is invoked on demand. Run `@auditor [feature name]` to check a single feature's artifacts for drift, broken references, and gaps. Run `@auditor [system]` for a cross-feature sweep before sprint reviews or roadmap planning.
 
 Skills run inline: `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`, `/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`.
 
@@ -168,7 +171,8 @@ riff/
 │   │   ├── builder.md                  # PM team lead
 │   │   ├── domain_pm.md                # Domain specialist - customize this
 │   │   ├── intent_writer.md            # Intent Brief specialist
-│   │   └── design_image_analyzer.md    # Design mockup analysis
+│   │   ├── design_image_analyzer.md    # Design mockup analysis
+│   │   └── auditor.md                  # On-demand artifact health checks
 │   └── skills/
 │       ├── backlog-groomer/SKILL.md    # RICE/ICE/Kano prioritization
 │       ├── decision-memo/SKILL.md      # Decision documentation
