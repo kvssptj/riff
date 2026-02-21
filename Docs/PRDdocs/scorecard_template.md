@@ -16,6 +16,7 @@
 | **Timeline** | Green / Yellow / Red | [Trend] | [Notes] |
 | **Quality** | Green / Yellow / Red | [Trend] | [Notes] |
 | **Dependencies** | Green / Yellow / Red | [Trend] | [Notes] |
+| **Eval Coverage** | Green / Yellow / Red | [Trend] | [Notes — e.g., "P0 dims all Green; latency dim Yellow"] |
 
 ---
 
@@ -81,6 +82,14 @@ Map scope to your product's feature areas, pillars, or layers as defined in your
 | Metric | Target | Current | Trend | Notes |
 |--------|--------|---------|-------|-------|
 | [Metric name] | [Target value] | [Current value or "Not yet measured"] | [Direction] | [Context] |
+
+---
+
+### 6b. Eval Results
+
+| Dimension | Method | Score | Threshold | Status | Last Run | Eval Plan |
+|-----------|--------|-------|-----------|--------|----------|-----------|
+| [Dimension] | [LLM-judge / Human / Regression] | [Score] | [Green ≥ X] | Green / Yellow / Red | [Date] | [Link] |
 
 ---
 

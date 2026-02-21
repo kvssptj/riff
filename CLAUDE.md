@@ -12,16 +12,16 @@ This is an **Agentic PM Framework** — a reusable product management system bui
 
 ## Agent Architecture
 
-The system is organized around **5 PM artifacts**. Agents and skills map to artifact types — each produces or consumes one or more artifacts.
+The system is organized around **6 PM artifacts**. Agents and skills map to artifact types — each produces or consumes one or more artifacts.
 
 - **`@builder`** is the PM team lead. It handles strategy directly and spawns `@intent_writer`, `@design_image_analyzer`, and `@domain_pm` as teammates for focused deliverables.
 - **`@domain_pm`** is the domain specialist. Customize it with your product's context. Use it for any domain-specific PM work.
 - **`@intent_writer`** and **`@design_image_analyzer`** are specialists that can be invoked directly or spawned by `@builder`.
-- **Skills** (`/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`, `/decision-memo`, `/question-log`, `/scorecard`) run inline — no subprocess needed.
+- **Skills** (`/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`, `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`) run inline — no subprocess needed.
 
-## 5 PM Artifacts
+## 6 PM Artifacts
 
-All PM work produces one of 5 artifact types. Map your task to the right artifact first.
+All PM work produces one of 6 artifact types. Map your task to the right artifact first.
 
 | Artifact | What It Is | Created By | Template |
 |----------|-----------|------------|----------|
@@ -30,18 +30,22 @@ All PM work produces one of 5 artifact types. Map your task to the right artifac
 | **Context File** | Living domain background for agents. Not templated. | Manual / `@domain_pm` | N/A |
 | **Question Log** | Tracks open questions through resolution. Replaces meeting notes. | `/question-log` | `question_log_template.md` |
 | **Scorecard** | Living feature health tracker. Replaces periodic status updates. | `/scorecard` | `scorecard_template.md` |
+| **Eval Plan** | Defines dimensions, rubrics, and ship criteria for AI/agent features. | `/eval-planner` | `eval_plan_template.md` |
 
 **How artifacts connect:**
 - Question Log questions → resolve into Decision Memos
 - Decision Memos → referenced in Intent Brief section 5 (Key Decisions Made)
 - Intent Brief scope → tracked in Scorecard section 3 (Scope Progress)
 - Scorecard open questions → pulled from Question Log
+- Eval Plan → derived from Intent Brief sections 3 and 6; results feed Scorecard section 6b
+- Eval Plan ship/no-ship decision → documented in Decision Memo
 
 **Naming conventions:**
 - Decision Memos: `DM_[YYYY-MM-DD]_[short-description].md`
 - Intent Briefs: `IB_[feature-name].md`
 - Question Logs: `QL_[feature-area].md`
 - Scorecards: `SC_[feature-name].md`
+- Eval Plans: `EP_[feature-name]_[YYYY-MM-DD].md`
 
 ## Agents
 
@@ -77,6 +81,7 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 | `/decision-memo` | Decision Memo | Capturing, evaluating, or retroactively documenting a product decision |
 | `/question-log` | Question Log | Tracking open questions from transcripts, reviews, or discussions |
 | `/scorecard` | Scorecard | Creating or updating a feature health tracker |
+| `/eval-planner` | Eval Plan | Writing eval plans, rubrics, and ship criteria for AI/agent features |
 | `/user-story-writer` | (feeds Intent Brief section 7) | Writing user stories with acceptance criteria and priority levels |
 | `/backlog-groomer` | (feeds Scorecard section 3) | Prioritizing features using RICE/ICE/Kano frameworks |
 | `/stakeholder-summarizer` | (one-off comms, not Scorecard) | Executive summaries, status updates, leadership briefs |
@@ -100,6 +105,9 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 | "Should we build or buy X?" | — | `@builder` (handles directly) |
 | "Define success metrics for X" | — | `@builder` (handles directly) |
 | "Multi-step: transcript → questions → decisions" | Multiple | `@builder` (chains artifacts in sequence) |
+| "Write an eval plan for feature X" | Eval Plan | `/eval-planner [create]` |
+| "Define eval dimensions and rubric" | Eval Plan | `/eval-planner [rubric]` |
+| "Update eval results, ship or no-ship?" | Eval Plan + Decision Memo | `/eval-planner [update]` → `/decision-memo [capture]` |
 
 ## Using Agents
 
@@ -116,6 +124,7 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 /decision-memo [capture/evaluate/retro] [context]
 /question-log [create/update/from-transcript] [input]
 /scorecard [create/update/snapshot] [feature context]
+/eval-planner [create/rubric/update] [feature or Intent Brief]
 /user-story-writer [paste requirements or Intent Brief]
 /backlog-groomer [paste list of items]
 /stakeholder-summarizer [paste context]
@@ -138,6 +147,7 @@ All templates are in `Docs/PRDdocs/`:
 | **Decision Memo** | `decision_memo_template.md` | `/decision-memo` — 7-section template for atomic decisions |
 | **Question Log** | `question_log_template.md` | `/question-log` — Question tracking with priority summary and feature grouping |
 | **Scorecard** | `scorecard_template.md` | `/scorecard` — Health rating, scope progress, decision tracker, risks, metrics |
+| **Eval Plan** | `eval_plan_template.md` | `/eval-planner` — 6-section template for AI/agent feature evals: dimensions, rubrics, ship criteria |
 | **Legacy PRD** | `prd_template.md` | Preserved as reference. New features use Intent Brief instead. |
 
 **Examples** (fictional Acme Corp / Notification Center):
@@ -146,6 +156,7 @@ All templates are in `Docs/PRDdocs/`:
 - `Docs/PRDdocs/examples/EXAMPLE_context_file.md`
 - `Docs/PRDdocs/examples/EXAMPLE_question_log.md`
 - `Docs/PRDdocs/examples/EXAMPLE_scorecard.md`
+- `Docs/PRDdocs/examples/EXAMPLE_eval_plan.md`
 
 ## Writing Standards
 
@@ -241,6 +252,14 @@ All product documents follow this structure:
 2. For living health tracking, use `/scorecard` instead
 3. Structure: Problem → Solution → Metrics. 1-2 pages max.
 
+**Writing an Eval Plan:**
+1. Use `/eval-planner [create]` — paste an Intent Brief or describe the feature/agent behavior
+2. Default output: complete 6-section Eval Plan with dimensions and rubrics tailored to agentic or LLM feature evals
+3. For rubric only: `/eval-planner [rubric]` — produces dimensions table with weights and eval methods
+4. When results are in: `/eval-planner [update]` — surfaces a ship/no-ship flag based on thresholds
+5. Ship/no-ship decision → document with `/decision-memo [capture]`
+6. Track eval health in Scorecard section 1 (Eval Coverage row) and section 6b (Eval Results)
+
 **Multi-Step Artifact Chains:**
 1. Use `@builder` to chain artifacts: transcript → Question Log → Decision Memos → Intent Brief → Scorecard
 2. Each step produces an artifact that feeds the next
@@ -249,6 +268,6 @@ All product documents follow this structure:
 
 - **Agent teams:** `@builder` acts as team lead — spawns `@intent_writer`, `@design_image_analyzer`, and `@domain_pm` as teammates.
 - **4 agents:** `@builder` (team lead), `@domain_pm` (domain specialist — customize), `@design_image_analyzer` (mockup analysis), `@intent_writer` (Intent Brief writing)
-- **5 PM Artifacts:** Decision Memo, Intent Brief, Context File, Question Log, Scorecard. All templates in `Docs/PRDdocs/`.
+- **6 PM Artifacts:** Decision Memo, Intent Brief, Context File, Question Log, Scorecard, Eval Plan. All templates in `Docs/PRDdocs/`.
 - **Legacy PRD template** preserved at `prd_template.md` for reference. New features use Intent Brief template.
 - **No code execution:** This is a documentation repository.
