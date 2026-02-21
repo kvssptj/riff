@@ -29,7 +29,7 @@ In an agentic world, a third purpose emerges:
 
 Current PRDs are optimized for purpose 2 and accidentally serve purpose 1. They're bad at purpose 3 — too much prose, too little structure, too many implicit assumptions. An agent reading a traditional PRD can't reliably extract what's in scope, what tradeoffs were made, or what decisions are still open.
 
-That's what prompted the 5-artifact redesign. Each artifact is structured so the judgment parts are clearly separated from the information-compilation parts. Agents handle the latter. PMs own the former.
+That's what prompted the 6-artifact redesign. Each artifact is structured so the judgment parts are clearly separated from the information-compilation parts. Agents handle the latter. PMs own the former.
 
 ---
 
@@ -63,9 +63,9 @@ Agents that maintain an evolving understanding of the product and surface the ri
 
 ---
 
-## The 5-Artifact System
+## The 6-Artifact System
 
-All PM work produces one of 5 artifact types:
+All PM work produces one of 6 artifact types:
 
 | Artifact | What It Is | PM writes | Agent handles |
 |----------|-----------|-----------|---------------|
@@ -74,6 +74,7 @@ All PM work produces one of 5 artifact types:
 | **Context File** | Living domain background that agents read to stay grounded. | Anti-patterns, terminology, ownership | Document indexing, staleness detection |
 | **Question Log** | Tracks open questions from raised to resolved. | Resolutions and judgment calls | Extraction from transcripts, status tracking |
 | **Scorecard** | Living feature health tracker updated on cadence. | Health assessment | Counting, risk flagging, metric tracking |
+| **Eval Plan** | Dimensions, rubrics, and ship criteria for AI/agent features. | Ship/no-ship judgment calls | Dimension drafting, threshold tracking, result recording |
 
 Two artifacts deserve emphasis:
 
@@ -89,10 +90,13 @@ How the hierarchy works:
 How they connect:
 
 ```
-Question Log      -> resolves into  -> Decision Memos
-Decision Memos    -> referenced in  -> Intent Brief (section 5)
-Intent Brief scope -> tracked in   -> Scorecard (section 3)
-Scorecard questions -> pulled from -> Question Log
+Question Log       -> resolves into  -> Decision Memos
+Decision Memos     -> referenced in  -> Intent Brief (section 5)
+Intent Brief scope -> tracked in    -> Scorecard (section 3)
+Scorecard questions -> pulled from  -> Question Log
+Intent Brief (sections 3, 6) -> informs -> Eval Plan (dimensions, rubrics)
+Eval Plan results  -> tracked in    -> Scorecard (section 6b)
+Eval Plan decision -> documented in -> Decision Memo
 ```
 
 ---
@@ -110,7 +114,7 @@ Scorecard questions -> pulled from -> Question Log
 
 `@domain_pm` is a template agent. You fill it in with your product's domain knowledge - feature areas, constructs, key docs - and it becomes a grounded specialist for your product.
 
-Skills run inline: `/decision-memo`, `/question-log`, `/scorecard`, `/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`.
+Skills run inline: `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`, `/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`.
 
 ---
 
@@ -168,6 +172,7 @@ riff/
 │   └── skills/
 │       ├── backlog-groomer/SKILL.md    # RICE/ICE/Kano prioritization
 │       ├── decision-memo/SKILL.md      # Decision documentation
+│       ├── eval-planner/SKILL.md       # Eval plans, rubrics, ship criteria
 │       ├── humanized-writing/SKILL.md  # Writing style enforcement
 │       ├── product-mece/SKILL.md       # MECE framework for product thinking
 │       ├── question-log/SKILL.md       # Question tracking
@@ -179,6 +184,7 @@ riff/
     └── PRDdocs/
         ├── intent_brief_template.md    # 9-section Intent Brief template
         ├── decision_memo_template.md   # 7-section Decision Memo template
+        ├── eval_plan_template.md       # 6-section Eval Plan template
         ├── question_log_template.md    # Question Log template
         ├── scorecard_template.md       # Scorecard template
         ├── prd_template.md             # Legacy PRD (reference only)
@@ -186,6 +192,7 @@ riff/
             ├── EXAMPLE_intent_brief.md
             ├── EXAMPLE_decision_memo.md
             ├── EXAMPLE_context_file.md
+            ├── EXAMPLE_eval_plan.md
             ├── EXAMPLE_question_log.md
             └── EXAMPLE_scorecard.md
 ```
