@@ -81,6 +81,8 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 | Skill | Artifact | Use When |
 |-------|----------|----------|
 | `/product-discovery` | (feeds Intent Brief sections 2-3) | JTBD interview guides, synthesizing research, building opportunity trees, mapping assumptions |
+| `/competitive-analysis` | (feeds Intent Brief section 2, Decision Memos) | Market landscape, head-to-head comparisons, moat assessment |
+| `/roadmapping-strategy` | (feeds Scorecard section 3) | OKR-aligned roadmaps, Now-Next-Later planning, stakeholder roadmap narratives |
 | `/decision-memo` | Decision Memo | Capturing, evaluating, or retroactively documenting a product decision |
 | `/question-log` | Question Log | Tracking open questions from transcripts, reviews, or discussions |
 | `/scorecard` | Scorecard | Creating or updating a feature health tracker |
@@ -98,6 +100,12 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 | "Build an opportunity tree for X" | (feeds Intent Brief) | `@user_research_analyst` or `/product-discovery [opportunity-tree]` |
 | "Map assumptions before we build X" | (feeds Decision Memo) | `/product-discovery [assumption-test]` |
 | "Generate an interview guide for X" | — | `/product-discovery [interview]` |
+| "Who are our competitors and where do we stand?" | (feeds Intent Brief section 2) | `/competitive-analysis [landscape]` |
+| "Compare us to Competitor A and B" | (feeds Decision Memo) | `/competitive-analysis [compare]` |
+| "How defensible is our position?" | (feeds Decision Memo) | `/competitive-analysis [moat]` |
+| "Build a Q[N] roadmap" | (feeds Scorecard section 3) | `/roadmapping-strategy [build]` |
+| "Check if our roadmap is aligned to OKRs" | — | `/roadmapping-strategy [align]` |
+| "Write a roadmap narrative for leadership" | — | `/roadmapping-strategy [present]` |
 | "Plan feature X" | Intent Brief | `@intent_writer` (or `@domain_pm` for domain-specific features) |
 | "We decided to do X" | Decision Memo | `/decision-memo [capture]` |
 | "Should we do X or Y?" | Decision Memo | `/decision-memo [evaluate]` |
@@ -133,6 +141,8 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 **Skill invocation** — use slash commands inline:
 ```
 /product-discovery [interview/synthesize/opportunity-tree/assumption-test] [input]
+/competitive-analysis [landscape/compare/moat] [market or competitor context]
+/roadmapping-strategy [build/align/present] [OKRs + features or existing roadmap]
 /decision-memo [capture/evaluate/retro] [context]
 /question-log [create/update/from-transcript] [input]
 /scorecard [create/update/snapshot] [feature context]
@@ -279,6 +289,21 @@ All product documents follow this structure:
 4. When results are in: `/eval-planner [update]` — surfaces a ship/no-ship flag based on thresholds
 5. Ship/no-ship decision → document with `/decision-memo [capture]`
 6. Track eval health in Scorecard section 1 (Eval Coverage row) and section 6b (Eval Results)
+
+**Competitive Analysis:**
+1. Use `/competitive-analysis [landscape]` for a market category overview — Porter's Five Forces, positioning map, white space
+2. Use `/competitive-analysis [compare]` with named competitors before writing an Intent Brief or making a build/buy decision
+3. Use `/competitive-analysis [moat]` when assessing product defensibility or planning long-term strategy
+4. Output feeds Intent Brief section 2 (Context) and `/decision-memo` for build/buy/partner calls
+5. Save to `research/competitive/[YYYY-MM-DD]_[topic].md`
+
+**Roadmap Planning:**
+1. Run `/backlog-groomer` first to score items — then feed those scores into `/roadmapping-strategy [build]`
+2. Provide: planning period + OKRs + scored feature list + team capacity
+3. For OKR alignment check on an existing roadmap: `/roadmapping-strategy [align]`
+4. For a stakeholder narrative: `/roadmapping-strategy [present]` — explains why, not just what
+5. The "what we're not doing" section is required — a roadmap without trade-offs is a wish list
+6. Save to `strategy/roadmap_[YYYY-MM-DD]_[period].md`
 
 **Multi-Step Artifact Chains:**
 1. Use `@builder` to chain artifacts: interviews → research synthesis → opportunity tree → Intent Brief → Scorecard

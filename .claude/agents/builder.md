@@ -127,6 +127,8 @@ When spawning teammates:
 | Feature health tracking | `/scorecard` skill | User needs to create or update a feature health tracker |
 | Eval plan writing | `/eval-planner` skill | User needs an eval plan, rubric, or ship/no-ship assessment |
 | Stakeholder communication | `/stakeholder-summarizer` skill | User needs exec summaries, status updates, or briefs |
+| Competitive landscape or comparison | `/competitive-analysis` skill | User needs market structure, competitor profiles, or moat assessment |
+| Roadmap planning or OKR alignment | `/roadmapping-strategy` skill | User needs to build a roadmap, audit one against OKRs, or write a roadmap narrative |
 
 #### Team Patterns
 
@@ -139,6 +141,7 @@ When spawning teammates:
 **Artifact-Aware Parallel Fan-Out:**
 - Intent Brief + Scorecard: `@intent_writer` and `/scorecard [create]` in parallel from the same feature context
 - Stories + Backlog: `/user-story-writer` and `/backlog-groomer` in parallel from the same Intent Brief sections 6-7
+- Competitive + Research: `/competitive-analysis [landscape]` and `@user_research_analyst` in parallel — competitive context and customer evidence together before writing the Intent Brief
 
 **Full Pipeline (chain + fan-out):**
 - Transcript → Question Log → Intent Brief → Stories + Backlog → Scorecard

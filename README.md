@@ -110,7 +110,7 @@ How they connect: see [Artifact Flow](#artifact-flow) below.
 
 `@auditor` is invoked on demand. Run `@auditor [feature name]` to check a single feature's artifacts for drift, broken references, and gaps. Run `@auditor [system]` for a cross-feature sweep before sprint reviews or roadmap planning.
 
-Skills run inline: `/product-discovery`, `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`, `/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`.
+Skills run inline: `/product-discovery`, `/competitive-analysis`, `/roadmapping-strategy`, `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`, `/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`.
 
 ---
 
@@ -123,7 +123,8 @@ Riff maps to six stages of PM work. Each stage has a dedicated tool and produces
 | Stage | When | Agent or Skill | Artifact |
 |-------|------|---------------|----------|
 | **Discover** | Before writing a feature brief | `@user_research_analyst`, `/product-discovery` | Research synthesis, opportunity tree |
-| **Plan** | Writing the PM's view of a feature | `@builder`, `@intent_writer [intent]`, `/decision-memo` | Intent Brief (sections 1–5), Decision Memos |
+| **Analyze** | Understanding market position and competitive context | `/competitive-analysis` | Landscape, comparison, or moat analysis |
+| **Plan** | Writing the PM's view of a feature or quarter | `@builder`, `@intent_writer [intent]`, `/decision-memo`, `/roadmapping-strategy` | Intent Brief (sections 1–5), Decision Memos, Roadmap |
 | **Spec** | Generating engineering-ready requirements | `@intent_writer [spec]`, `/user-story-writer`, `/backlog-groomer` | Intent Brief (sections 6–9) |
 | **Validate** | Evaluating AI/agent features before ship | `/eval-planner` | Eval Plan |
 | **Track** | Monitoring feature health on cadence | `/scorecard`, `/question-log` | Scorecard, Question Log |
@@ -166,7 +167,7 @@ graph TD
     URA["@user_research_analyst\nresearch synthesis + opportunity mapping"]
     DIA["@design_image_analyzer\ndesign question extraction"]
     AU["@auditor\nartifact health checks"]
-    SK["Skills — run inline\n/product-discovery  /decision-memo  /question-log\n/scorecard  /eval-planner  /user-story-writer\n/backlog-groomer  /stakeholder-summarizer"]
+    SK["Skills — run inline\n/product-discovery  /competitive-analysis  /roadmapping-strategy\n/decision-memo  /question-log  /scorecard  /eval-planner\n/user-story-writer  /backlog-groomer  /stakeholder-summarizer"]
 
     PM -->|invokes| B
     PM -->|invokes directly| AU
@@ -248,8 +249,10 @@ riff/
 │   │   ├── user_research_analyst.md    # JTBD synthesis and opportunity mapping
 │   │   └── auditor.md                  # On-demand artifact health checks
 │   └── skills/
-│       ├── product-discovery/SKILL.md  # JTBD interviews, synthesis, opportunity trees
-│       ├── backlog-groomer/SKILL.md    # RICE/ICE/Kano prioritization
+│       ├── product-discovery/SKILL.md      # JTBD interviews, synthesis, opportunity trees
+│       ├── competitive-analysis/SKILL.md   # Market landscape, comparisons, moat analysis
+│       ├── roadmapping-strategy/SKILL.md   # OKR-aligned roadmaps, Now-Next-Later planning
+│       ├── backlog-groomer/SKILL.md        # RICE/ICE/Kano prioritization
 │       ├── decision-memo/SKILL.md      # Decision documentation
 │       ├── eval-planner/SKILL.md       # Eval plans, rubrics, ship criteria
 │       ├── humanized-writing/SKILL.md  # Writing style enforcement
