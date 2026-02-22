@@ -221,6 +221,14 @@ Think of it as onboarding docs for your agents. Your `@domain_pm` reads this to 
 
 Every agent and skill enforces the same standard: ground every claim, at least one concrete example per section, no buzzwords, depth over breadth, consistent numbering for traceability.
 
+**Critical Thinking Triggers**
+
+Agents don't just produce artifacts — they push back. `@builder` and `@intent_writer` have built-in red flags that fire before proceeding: unmeasurable goals, scope without rationale, priority claims with no trade-off, "quick wins" with no opportunity cost analysis. The agent surfaces the question the PM didn't know to ask.
+
+**Memory**
+
+`@builder` and `@domain_pm` save learnings that accumulate value across conversations — competitive signals, recurring customer patterns, outcome data, failed hypotheses. This is the mechanism for Level 3: agents that know your product's history, not just its current state.
+
 ---
 
 ## Philosophy
