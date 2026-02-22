@@ -14,10 +14,10 @@ This is an **Agentic PM Framework** — a reusable product management system bui
 
 The system is organized around **6 PM artifacts**. Agents and skills map to artifact types — each produces or consumes one or more artifacts.
 
-- **`@builder`** is the PM team lead. It handles strategy directly and spawns `@intent_writer`, `@design_image_analyzer`, and `@domain_pm` as teammates for focused deliverables.
+- **`@builder`** is the PM team lead. It handles strategy directly and spawns `@intent_writer`, `@design_image_analyzer`, `@domain_pm`, and `@user_research_analyst` as teammates for focused deliverables.
 - **`@domain_pm`** is the domain specialist. Customize it with your product's context. Use it for any domain-specific PM work.
-- **`@intent_writer`** and **`@design_image_analyzer`** are specialists that can be invoked directly or spawned by `@builder`.
-- **Skills** (`/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`, `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`) run inline — no subprocess needed.
+- **`@intent_writer`**, **`@design_image_analyzer`**, and **`@user_research_analyst`** are specialists that can be invoked directly or spawned by `@builder`.
+- **Skills** (`/product-discovery`, `/user-story-writer`, `/backlog-groomer`, `/stakeholder-summarizer`, `/extract-transcript`, `/decision-memo`, `/question-log`, `/scorecard`, `/eval-planner`) run inline — no subprocess needed.
 
 ## 6 PM Artifacts
 
@@ -55,7 +55,7 @@ All PM work produces one of 6 artifact types. Map your task to the right artifac
 - **Role:** PM team lead + strategist
 - **Model:** Claude Opus
 - **Handles directly:** Product strategy, competitive analysis, build-vs-buy decisions, metrics definition, roadmap planning, go-to-market strategy
-- **Spawns teammates for:** Intent Briefs (`@intent_writer`), design analysis (`@design_image_analyzer`), domain-specific work (`@domain_pm`)
+- **Spawns teammates for:** Intent Briefs (`@intent_writer`), design analysis (`@design_image_analyzer`), domain-specific work (`@domain_pm`), customer research synthesis (`@user_research_analyst`)
 
 ### Domain Agent
 
@@ -71,6 +71,7 @@ All PM work produces one of 6 artifact types. Map your task to the right artifac
 |-------|------|----------|
 | **`@design_image_analyzer`** | `.claude/agents/design_image_analyzer.md` | Analyzing Figma mockups, wireframes, or screenshots for design gaps. Output is `/question-log` compatible. |
 | **`@intent_writer`** | `.claude/agents/intent_writer.md` | Writing Intent Briefs. Modes: `[intent]` (sections 1-5), `[spec]` (sections 6-9), `[full]`, `[review]`, `[exec]` |
+| **`@user_research_analyst`** | `.claude/agents/user_research_analyst.md` | Synthesizing customer interviews, building opportunity solution trees, mapping assumptions before a build decision. Output feeds Intent Brief sections 2-3. |
 | **`@auditor`** | `.claude/agents/auditor.md` | On-demand audit of PM artifacts — broken references, drift, staleness, coverage gaps. Modes: `[feature]`, `[system]` |
 
 ## Skills
@@ -79,6 +80,7 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 
 | Skill | Artifact | Use When |
 |-------|----------|----------|
+| `/product-discovery` | (feeds Intent Brief sections 2-3) | JTBD interview guides, synthesizing research, building opportunity trees, mapping assumptions |
 | `/decision-memo` | Decision Memo | Capturing, evaluating, or retroactively documenting a product decision |
 | `/question-log` | Question Log | Tracking open questions from transcripts, reviews, or discussions |
 | `/scorecard` | Scorecard | Creating or updating a feature health tracker |
@@ -92,6 +94,10 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 
 | Task | Artifact | Use |
 |------|----------|-----|
+| "Synthesize these customer interviews" | (feeds Intent Brief) | `@user_research_analyst` |
+| "Build an opportunity tree for X" | (feeds Intent Brief) | `@user_research_analyst` or `/product-discovery [opportunity-tree]` |
+| "Map assumptions before we build X" | (feeds Decision Memo) | `/product-discovery [assumption-test]` |
+| "Generate an interview guide for X" | — | `/product-discovery [interview]` |
 | "Plan feature X" | Intent Brief | `@intent_writer` (or `@domain_pm` for domain-specific features) |
 | "We decided to do X" | Decision Memo | `/decision-memo [capture]` |
 | "Should we do X or Y?" | Decision Memo | `/decision-memo [evaluate]` |
@@ -120,11 +126,13 @@ Invoke with `/skill-name`. Runs inline — no subprocess.
 @domain_pm [your task/question]
 @intent_writer [your task/question]
 @design_image_analyzer [your task/question]
+@user_research_analyst [paste interview notes or feature brief]
 @auditor [feature name] or @auditor [system]
 ```
 
 **Skill invocation** — use slash commands inline:
 ```
+/product-discovery [interview/synthesize/opportunity-tree/assumption-test] [input]
 /decision-memo [capture/evaluate/retro] [context]
 /question-log [create/update/from-transcript] [input]
 /scorecard [create/update/snapshot] [feature context]
@@ -212,6 +220,14 @@ All product documents follow this structure:
 
 ## Common PM Tasks
 
+**Running Customer Discovery:**
+1. Use `@user_research_analyst` to synthesize interview notes — paste notes directly or reference files in `research/interviews/`
+2. For an interview guide before talking to customers: `/product-discovery [interview]` + problem area or persona
+3. After synthesis: use `/product-discovery [opportunity-tree]` to map opportunities to a measurable business outcome
+4. Before writing a spec: `/product-discovery [assumption-test]` + paste Intent Brief section 5 — surfaces blockers before build starts
+5. Open questions from synthesis → `/question-log`; confirmed/killed hypotheses → `/decision-memo [capture]`
+6. Synthesis output feeds Intent Brief sections 2 (Context) and 3 (Goals)
+
 **Planning a Feature (Intent Brief):**
 1. Use `@intent_writer` (or `@domain_pm` for domain-specific features)
 2. Default mode: `[intent]` — writes PM Intent (sections 1-5)
@@ -265,13 +281,14 @@ All product documents follow this structure:
 6. Track eval health in Scorecard section 1 (Eval Coverage row) and section 6b (Eval Results)
 
 **Multi-Step Artifact Chains:**
-1. Use `@builder` to chain artifacts: transcript → Question Log → Decision Memos → Intent Brief → Scorecard
-2. Each step produces an artifact that feeds the next
+1. Use `@builder` to chain artifacts: interviews → research synthesis → opportunity tree → Intent Brief → Scorecard
+2. Full discovery-to-spec pipeline: `@user_research_analyst` → `@intent_writer` → `/backlog-groomer` + `/scorecard`
+3. Each step produces an artifact that feeds the next
 
 ## Important Notes
 
-- **Agent teams:** `@builder` acts as team lead — spawns `@intent_writer`, `@design_image_analyzer`, and `@domain_pm` as teammates.
-- **4 agents:** `@builder` (team lead), `@domain_pm` (domain specialist — customize), `@design_image_analyzer` (mockup analysis), `@intent_writer` (Intent Brief writing)
+- **Agent teams:** `@builder` acts as team lead — spawns `@intent_writer`, `@design_image_analyzer`, `@domain_pm`, and `@user_research_analyst` as teammates.
+- **6 agents:** `@builder` (team lead), `@domain_pm` (domain specialist — customize), `@design_image_analyzer` (mockup analysis), `@intent_writer` (Intent Brief writing), `@user_research_analyst` (research synthesis), `@auditor` (artifact health checks)
 - **6 PM Artifacts:** Decision Memo, Intent Brief, Context File, Question Log, Scorecard, Eval Plan. All templates in `Docs/PRDdocs/`.
 - **Legacy PRD template** preserved at `prd_template.md` for reference. New features use Intent Brief template.
 - **No code execution:** This is a documentation repository.

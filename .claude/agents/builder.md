@@ -117,6 +117,7 @@ When spawning teammates:
 | Design mockup analysis | `@design_image_analyzer` | User provides an image and wants design questions |
 | Intent Brief writing | `@intent_writer` | User needs a planning document (PM Intent, Agent Spec, or full) |
 | Domain-specific work (any type) | `@domain_pm` | Task is domain-specific and needs deep product knowledge |
+| Customer research synthesis | `@user_research_analyst` | User provides interview notes or needs opportunity mapping / assumption testing |
 | Artifact audit (feature or system) | `@auditor` | User wants to find drift, broken references, or coverage gaps |
 | Meeting transcript → Question Log | `/question-log [from-transcript]` skill | User provides a transcript and wants tracked questions |
 | Meeting transcript → quick extraction | `/extract-transcript` skill | User wants a quick one-time question summary |
@@ -130,6 +131,7 @@ When spawning teammates:
 #### Team Patterns
 
 **Artifact-Aware Sequential Chains:**
+- Research → Intent Brief: `@user_research_analyst` (synthesis + opportunity tree) → `@intent_writer` with research-grounded sections 2 and 3
 - Transcript → Question Log → Decision Memos: `/question-log [from-transcript]` → review open questions → `/decision-memo [capture]` for resolved decisions
 - Design analysis → Intent Brief: `@design_image_analyzer` → `@intent_writer` with identified requirements and design questions
 - Intent Brief → Stories + Backlog: `@intent_writer [intent]` → `@intent_writer [spec]` or `/user-story-writer` + `/backlog-groomer` in parallel
