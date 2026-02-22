@@ -12,7 +12,7 @@ Most "AI for PM" is prompt-and-paste. Ask Claude to summarize a transcript. Ask 
 
 Riff is different. It's an architecture for agentic PM work - where a team of specialized agents handles the information-dense, consistency-checking, artifact-producing work, while the PM focuses on what only a human can do: judgment, strategy, and the decisions that no framework captures.
 
-The core insight: PM work follows the same pattern as agentic coding. A team lead (`@builder`) coordinates specialists (`@intent_writer`, `@domain_pm`, `@design_image_analyzer`), each producing artifacts that feed the next. The PM stays in the loop at decision points - not to produce documents, but to make calls. Agents draft. PMs decide.
+The core insight: PM work follows the same pattern as agentic coding. A team lead (`@builder`) coordinates specialists (`@user_research_analyst`, `@intent_writer`, `@domain_pm`, `@design_image_analyzer`), each producing artifacts that feed the next. The PM stays in the loop at decision points — not to produce documents, but to make calls. Agents draft. PMs decide.
 
 ---
 
@@ -87,20 +87,7 @@ How the hierarchy works:
 - **Intent Brief** is the container - stitches decisions into a coherent feature plan
 - **Context File, Question Log, and Scorecard** are infrastructure - they make the first two work better over time and turn one-shot interactions into a persistent, context-aware system
 
-How they connect:
-
-```
-Research synthesis -> grounds      -> Intent Brief (sections 2, 3)
-Opportunity tree   -> informs      -> Intent Brief (section 4 Scope)
-Assumption tests   -> resolve into -> Decision Memos
-Question Log       -> resolves into -> Decision Memos
-Decision Memos     -> referenced in -> Intent Brief (section 5)
-Intent Brief scope -> tracked in   -> Scorecard (section 3)
-Scorecard questions -> pulled from -> Question Log
-Intent Brief (sections 3, 6) -> informs -> Eval Plan (dimensions, rubrics)
-Eval Plan results  -> tracked in   -> Scorecard (section 6b)
-Eval Plan decision -> documented in -> Decision Memo
-```
+How they connect: see [Artifact Flow](#artifact-flow) below.
 
 ---
 
@@ -127,6 +114,84 @@ Skills run inline: `/product-discovery`, `/decision-memo`, `/question-log`, `/sc
 
 ---
 
+## How Everything Fits Together
+
+### The PM Lifecycle
+
+Riff maps to six stages of PM work. Each stage has a dedicated tool and produces a specific artifact.
+
+| Stage | When | Agent or Skill | Artifact |
+|-------|------|---------------|----------|
+| **Discover** | Before writing a feature brief | `@user_research_analyst`, `/product-discovery` | Research synthesis, opportunity tree |
+| **Plan** | Writing the PM's view of a feature | `@builder`, `@intent_writer [intent]`, `/decision-memo` | Intent Brief (sections 1–5), Decision Memos |
+| **Spec** | Generating engineering-ready requirements | `@intent_writer [spec]`, `/user-story-writer`, `/backlog-groomer` | Intent Brief (sections 6–9) |
+| **Validate** | Evaluating AI/agent features before ship | `/eval-planner` | Eval Plan |
+| **Track** | Monitoring feature health on cadence | `/scorecard`, `/question-log` | Scorecard, Question Log |
+| **Review** | Auditing before sprint review or roadmap | `@auditor` | Audit report |
+
+### Artifact Flow
+
+How artifacts feed each other:
+
+```mermaid
+graph TD
+    RS["Research Synthesis\ninterviews → jobs + opportunities"]
+    OT["Opportunity Tree\noutcome → problems → solution ideas"]
+    IB["Intent Brief\n9 sections"]
+    QL["Question Log\nopen → resolved"]
+    DM["Decision Memo\none decision + reasoning"]
+    SC["Scorecard\nfeature health tracker"]
+    EP["Eval Plan\nAI/agent features only"]
+
+    RS -->|"grounds sections 2–3"| IB
+    OT -->|"informs section 4 scope"| IB
+    QL -->|"open questions → section 9"| IB
+    DM -->|"decisions → section 5"| IB
+    QL -->|"resolves into"| DM
+    IB -->|"scope → section 3"| SC
+    IB -->|"goals + reqs → dimensions"| EP
+    EP -->|"results → section 6b"| SC
+    EP -->|"ship/no-ship call"| DM
+    SC -->|"open questions"| QL
+```
+
+### Agent Relationships
+
+```mermaid
+graph TD
+    PM["PM"]
+    B["@builder\nteam lead + strategist"]
+    IW["@intent_writer\nIntent Briefs"]
+    DP["@domain_pm\ndomain specialist — customize this"]
+    URA["@user_research_analyst\nresearch synthesis + opportunity mapping"]
+    DIA["@design_image_analyzer\ndesign question extraction"]
+    AU["@auditor\nartifact health checks"]
+    SK["Skills — run inline\n/product-discovery  /decision-memo  /question-log\n/scorecard  /eval-planner  /user-story-writer\n/backlog-groomer  /stakeholder-summarizer"]
+
+    PM -->|invokes| B
+    PM -->|invokes directly| AU
+    PM -->|invokes directly| SK
+    B -->|spawns| IW
+    B -->|spawns| DP
+    B -->|spawns| URA
+    B -->|spawns| DIA
+```
+
+### What the PM Owns vs. What Agents Handle
+
+The split is consistent across every artifact: PM provides judgment, agents handle compilation.
+
+| What the PM writes | What agents generate |
+|--------------------|---------------------|
+| Intent Brief sections 1–5: problem, goals, scope | Intent Brief sections 6–9: requirements, stories, dependencies |
+| Decision Memos: the actual decision and reasoning | Flags when assumptions embedded in decisions have changed |
+| Question Log resolutions: the judgment call | Extraction from transcripts, status tracking, priority sorting |
+| Scorecard health rating | Metric counts, risk flags, drift detection |
+| Eval Plan ship/no-ship call | Dimension drafting, threshold tracking, score recording |
+| Research agenda: who to talk to, what to test | JTBD synthesis, opportunity trees, assumption maps |
+
+---
+
 ## Getting Started
 
 ### 1. Clone the repo
@@ -144,24 +209,26 @@ Edit `.claude/agents/domain_pm.md`. Fill in the Domain Expertise section with yo
 
 This is the only file that's truly project-specific. Everything else works out of the box.
 
-### 3. Run your first skill
+### 3. Try your first workflow
 
-Try a quick win:
-
+**Capture a decision:**
 ```
 /decision-memo [evaluate] Should we build our own search or use a third-party library?
 ```
 
-Or start an Intent Brief:
+**Start from research:**
+```
+@user_research_analyst Here are notes from 4 customer interviews. Extract the jobs and surface the top opportunities.
+```
 
+**Write a feature brief:**
 ```
 @intent_writer Write an Intent Brief for [your feature].
 ```
 
-Or chain a full artifact pipeline:
-
+**Chain a full pipeline:**
 ```
-@builder Here is a transcript from our design review. Extract questions, create a Question Log, and draft Decision Memos for what we decided.
+@builder Here are 6 customer interviews and a design transcript. Synthesize the research, extract questions into a Question Log, and start an Intent Brief.
 ```
 
 ---
