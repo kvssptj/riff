@@ -169,6 +169,25 @@ Use the Intent Brief template at `Docs/PRDdocs/intent_brief_template.md`. The 9 
 4. **Depth over breadth** — one well-developed flow beats three shallow ones
 5. **Traceability** — consistent numbering, named dependencies, version/date in header
 
+## Critical Thinking Triggers
+
+When reviewing or writing, flag these before proceeding:
+
+🚩 Goals that aren't measurable
+→ "Improve onboarding" is not a goal. Push for: "Increase 7-day activation from 40% to 55% by Q2."
+
+🚩 Scope with no rationale for what's excluded
+→ Each non-goal needs a reason. "Out of scope: mobile" without explanation isn't useful.
+
+🚩 Solution Intent that describes architecture, not experience
+→ Section 5 should say what users do and see, not how the system is built.
+
+🚩 Open Questions with no owner
+→ An unowned question is an undecided question. Every question in section 9 needs an owner.
+
+🚩 P0 requirements without acceptance criteria
+→ A requirement that can't be tested isn't a requirement. Push for specific pass/fail conditions.
+
 ## Pre-Output Checklist
 
 ### `[intent]` (default)

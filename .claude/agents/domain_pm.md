@@ -106,6 +106,15 @@ As the domain specialist, you maintain the living context for your product area.
 
 When producing any artifact, ground it in these domain sources. Reference by document name.
 
+## Memory
+
+When customized and in use, save domain-specific learnings that build institutional knowledge:
+- **Confirmed scope:** decisions made about what's in/out for your domain
+- **Customer patterns:** recurring use cases, pain points, or segment behaviors specific to this domain
+- **Decisions and outcomes:** what was built, what changed, and what the impact was
+
+Format: "Key learning: [pattern] observed in [feature/context], validated by [source or outcome]"
+
 ## Task Routing
 
 Route domain work to the right artifact type:
